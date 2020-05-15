@@ -1,0 +1,33 @@
+stages: [ Reports, Build, Push ]
+
+default:
+  timeout: 1h 30m
+
+include:
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/global.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/base.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/lint/docker.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/build/docker.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/push/gitlab-registry.yml"
+
+workflow:
+  rules:
+    - if: $PIPELINE_DISABLE == "true"
+      when: never
+    - if: '$CI_PIPELINE_SOURCE =~ /^(trigger|merge_request_event)$/'
+      when: never
+    - when: always
+
+variables:
+  GIT_DEPTH: "20"
+  GIT_SUBMODULE_STRATEGY: "none"
+  

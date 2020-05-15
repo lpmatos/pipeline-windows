@@ -1,0 +1,59 @@
+.base-pre-check:
+  extends:
+    - .default-retry
+    - .tag-woopi-runner
+  stage: .pre
+
+.base-docker-lint:
+  extends:
+    - .default-retry
+    - .tag-k8s-aws-runner-prod
+  image:
+    name: hadolint/hadolint:latest-debian
+  stage: Reports
+  allow_failure: true
+  before_script:
+    - hadolint --version
+
+.base-yml-lint:
+  extends:
+    - .default-retry
+    - .tag-k8s-aws-runner-prod
+  image: 
+    name: sdesbure/yamllint:latest
+  stage: Reports
+  variables:
+    LINT_PATHS: .gitlab-ci.yml base.yml bronze.yml .gitlab/ci
+  allow_failure: true
+
+.base-docker-build:
+  extends:
+    - .default-retry-always
+    - .tag-woopi-runner
+  stage: Build
+
+.base-push-aws-ecr:
+  extends:
+    - .default-retry
+    - .tag-woopi-runner
+  stage: Push
+  before_script:
+    - echo "Docker login..."
+    - Invoke-Expression -Command (aws ecr get-login --no-include-email --region us-east-1)
+
+.base-push-gitlab-registry:
+  extends:
+    - .default-retry
+    - .tag-woopi-runner
+  stage: Push
+  before_script:
+    - echo "Docker login..."
+    - docker login -u gitlab-ci-token -p ${CI_BUILD_TOKEN} ${CI_REGISTRY}
+
+.base-deploy-aws-ecs:
+  extends:
+    - .default-retry
+    - .tag-k8s-aws-runner-prod
+  image:
+    name: docker.pkg.github.com/lpmatos/deploy-ecs/deploy-ecs:latest
+  stage: Deploy

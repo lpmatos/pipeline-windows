@@ -1,0 +1,45 @@
+stages: [ .pre, Reports, Build, Push, Deploy ]
+
+default:
+  timeout: 1h 30m
+
+include:
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/global.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/base.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/aws.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/ecr.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/ecs.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/lint/docker.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/build/aws-ecr.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/push/aws-ecr.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/deploy/aws-ecs.yml"
+
+workflow:
+  rules:
+    - if: $PIPELINE_DISABLE == "true"
+      when: never
+    - if: '$CI_PIPELINE_SOURCE =~ /^(trigger|merge_request_event)$/'
+      when: never
+    - when: always
+
+variables:
+  GIT_DEPTH: "20"
+  GIT_SUBMODULE_STRATEGY: "none"
+  

@@ -1,0 +1,14 @@
+docker-lint-stage:
+  extends: 
+    - .base-docker-lint
+    - .only-changes-stage
+  script:
+    - hadolint ${CI_PROJECT_DIR}/Dockerfile
+
+docker-lint-master:
+  extends: 
+    - .base-docker-lint
+    - .only-changes-master
+  script:
+    - hadolint ${CI_PROJECT_DIR}/Dockerfile
+    

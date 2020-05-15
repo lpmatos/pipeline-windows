@@ -1,0 +1,17 @@
+docker-build-aws-ecr-stage:
+  extends: 
+    - .base-docker-build
+    - .only-changes-stage
+  script:
+    - docker image build -t ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG} .
+    - docker image tag ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG} ${REPOSITORY_URL}:${CI_COMMIT_SHORT_SHA}
+
+docker-build-aws-ecr-master:
+  extends: 
+    - .base-docker-build
+    - .only-changes-master
+  script:
+    - docker build --no-cache ${BUILD_ARG} -t ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG} -f Dockerfile .
+    - docker tag ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG} ${REPOSITORY_URL}:${CI_COMMIT_SHORT_SHA}
+    - docker tag ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG} ${REPOSITORY_URL}:latest
+    

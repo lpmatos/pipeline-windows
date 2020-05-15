@@ -1,0 +1,17 @@
+push-aws-ecr-stage:
+  extends: 
+    - .base-push-aws-ecr
+    - .only-changes-stage
+  script:
+    - docker push ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG}
+    - docker push ${REPOSITORY_URL}:${CI_COMMIT_SHORT_SHA}
+
+push-aws-ecr-master:
+  extends: 
+    - .base-push-aws-ecr
+    - .only-changes-master
+  script:
+    - docker push ${REPOSITORY_URL}:${CI_COMMIT_REF_SLUG}
+    - docker push ${REPOSITORY_URL}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${REPOSITORY_URL}:latest
+    

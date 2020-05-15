@@ -1,0 +1,14 @@
+deploy-aws-ecs-stage:
+  extends: 
+    - .base-deploy-aws-ecs
+    - .only-changes-stage
+  script:
+    - bash /deploy.sh -c ${CLUSTER_NAME_STAGE} -s ${SERVICE_NAME_STAGE} --task-name ${TASK_DEFINTION_NAME_STAGE}
+
+deploy-aws-ecs-master:
+  extends: 
+    - .base-deploy-aws-ecs
+    - .only-changes-master
+  script:
+    - bash /deploy.sh -c ${CLUSTER_NAME_PROD} -s ${SERVICE_NAME_PROD} --task-name ${TASK_DEFINTION_NAME_PROD}
+    

@@ -1,0 +1,14 @@
+clean-ec2-docker-images:
+  extends: 
+    - .tag-woopi-runner
+  allow_failure: true
+  stage: Clean
+  before_script:
+    - docker images
+  script:
+    - echo "Remove all images..."
+    - docker system prune -af
+  only:
+    refs:
+      - schedules
+    

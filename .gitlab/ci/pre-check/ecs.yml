@@ -1,0 +1,32 @@
+pre-check-aws-ecs-stage:
+  extends: 
+    - .base-pre-check
+    - .only-changes-stage
+  script:
+    - Write-Host "Checking AWS ECS - Stage."
+    - |
+      If ($CLUSTER_NAME_STAGE -and $SERVICE_NAME_STAGE -and $TASK_DEFINTION_NAME_STAGE)
+      {
+        Write-Host "Everything is okay!"
+      }
+      Else
+      {
+        Write-Error "The ECS Credentials in Stage must be passed."
+      }
+    
+pre-check-aws-ecs-master:
+  extends: 
+    - .base-pre-check
+    - .only-changes-master
+  script:
+    - Write-Host "Checking AWS ECS - Prod."
+    - |
+      If ($CLUSTER_NAME_PROD -and $SERVICE_NAME_PROD -and $TASK_DEFINTION_NAME_PROD)
+      {
+        Write-Host "Everything is okay!"
+      }
+      Else
+      {
+        Write-Error "The ECS Credentials in Stage must be passed."
+      }
+      

@@ -1,0 +1,17 @@
+docker-build-stage:
+  extends: 
+    - .base-docker-build
+    - .only-changes-stage
+  script:
+    - docker build --no-cache ${BUILD_ARG} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} -f Dockerfile .
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+
+docker-build-master:
+  extends: 
+    - .base-docker-build
+    - .only-changes-master
+  script:
+    - docker build --no-cache ${BUILD_ARG} -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} -f Dockerfile .
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    - docker tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG} ${CI_REGISTRY_IMAGE}:latest
+    

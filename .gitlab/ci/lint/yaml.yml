@@ -1,0 +1,8 @@
+lint-ci-gitlab:
+  extends:
+    - .yaml-rules
+    - .base-yml-lint
+  script:
+    - '[[ ! -d "ee/" ]] || export LINT_PATHS="${LINT_PATHS}"'
+    - |
+      yamllint -d "{extends: relaxed, rules: {line-length: {max: 300}}}" ${LINT_PATHS}

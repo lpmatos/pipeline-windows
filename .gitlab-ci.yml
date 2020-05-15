@@ -1,0 +1,17 @@
+stages: [ Reports, Clean ]
+
+include:
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/global.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/base.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/rules.gitlab-ci.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/lint/yaml.yml"
+
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/clean/ec2-docker.yml"

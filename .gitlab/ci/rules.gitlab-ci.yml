@@ -1,0 +1,8 @@
+.yaml-rules:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_REF_NAME == "develop"'
+      changes:
+        - "*.yml"
+        - ".gitlab/ci/*.yml"
+        - ".gitlab/ci/**/*.yml"
+        

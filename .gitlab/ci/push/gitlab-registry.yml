@@ -1,0 +1,17 @@
+push-gitlab-registry-stage:
+  extends: 
+    - .base-push-gitlab-registry
+    - .only-changes-stage
+  script:
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    
+push-gitlab-registry-master:
+  extends: 
+    - .base-push-gitlab-registry
+    - .only-changes-master
+  script:
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+    

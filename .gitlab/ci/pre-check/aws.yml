@@ -1,0 +1,16 @@
+pre-check-aws-credentials:
+  extends: 
+    - .base-pre-check
+    - .only-changes-default
+  script: 
+    - Write-Host "Checking AWS Credentials."
+    - |
+      If ($AWS_ACCESS_KEY_ID -and $AWS_SECRET_ACCESS_KEY)
+      {
+        Write-Host "Everything is okay!"
+      }
+      Else
+      {
+        Write-Error "AWS Credentials must be passed."
+      }
+      

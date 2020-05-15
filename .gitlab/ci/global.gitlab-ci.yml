@@ -1,0 +1,41 @@
+.tag-woopi-runner:
+  tags:
+    - windows
+
+.tag-k8s-aws-runner-prod:
+  tags:
+    - aws-prod
+
+.default-retry:
+  retry:
+    max: 2  # This is confusing but this means "3 runs at max".
+    when:
+      - unknown_failure
+      - api_failure
+      - runner_system_failure
+      - stuck_or_timeout_failure
+
+.default-retry-always:
+  retry:
+    max: 2  # This is confusing but this means "3 runs at max".
+    when:
+      - always
+
+.only-changes-stage:
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_REF_SLUG == "stage"
+
+.only-changes-master:
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_REF_SLUG == "master"
+
+.only-changes-default:
+  only:
+    refs:
+      - branches

@@ -1,0 +1,16 @@
+pre-check-aws-ecr:
+  extends: 
+    - .base-pre-check
+    - .only-changes-default
+  script:
+    - Write-Host "Checking AWS ECR."
+    - |
+      If ($REPOSITORY_URL)
+      {
+        Write-Host "Everything is okay!"
+      }
+      Else
+      {
+        Write-Error "The ECR Repository URL must be passed."
+      }
+      
