@@ -50,6 +50,7 @@
 
 <p align="left">
   <a href="#pre-requisites">Pre-Requisites</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#about">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#description">Description</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#testing">Testing</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#how-to-contribute">How to contribute</a>
@@ -90,7 +91,7 @@ To this project you yeed:
 - windows
 - aws-prod
 
-### Description
+### About
 
 When we are working with continuous delivery methodologies, we have two extremely important concepts that need to be understood and differentiated: internships and jobs.
 
@@ -99,6 +100,36 @@ Basically, the stages of a pipeline will be the organizers of the job execution 
 <p align="center">
   <img alt="gitlab-ci" src="https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_extended_v12_3.png" width="950px" float="center"/>
 </p>
+
+### Description
+
+Nessa pipeline fazemos algumas validações iniciais com o estágio **.pre** onde validamos algumas variáveis que utilizamos como input para fazer alguns processos, como:
+
+* Deploy
+* Push
+* Autenticação
+
+Geralmente são variáveis sensíveis e que devemos passar de alguma forma para a nossa pipeline. A forma mais abordada é utilizando a própria interface do GitLab e setando esses valores como environments ou de um grupo ou do próprio projeto. Caso o estágio de **.pre** ache algum valor que esteja faltando ou que esteja vazio, o resto da pipeline não é concluída. 
+
+Após as validações temos um estádio de Lint/Reports, na qual executamos ferramentas de análise estática para validar códigos, arquivos e outros... Nesse caso utilizado para validar o Dockerfile. Rodamos uma ferramenta chamada [hadolint](https://github.com/hadolint/hadolint) que faz o Lint do Dockerfile. Quando rodamos ela passamos um arquivo Dockerfile como parâmetro e ela analisa procurando coisas fora do padrão e recomendando boas práticas. Caso a ferramente encontre algum problema, a pipeline não falhará, o job irá finalizar em estado de warning e o resto do processo será continuado. A níveis de melhoria é recomendado que todos os warnings sejam selecionados, assim iremos conseguir garantir uma melhor entrega/qualidade do nosso processo.
+
+Com o final do Lint/Reports temos o estágio de build. No build iremos criar jobs responsáveis por construções. Nesse caso abordamos a construção de images Docker. O tipo de imagem base que você utilizada para criar seu Container irá impactar diretamente no tipo de runner que você deverá utilizar para executar esse Docker Build. Como nesse projeto estamos construindo uma pipeline que suporta build de imagens Windows, precisamos de um Runner Windows. Jobs mais simples e que não precisam dessa especificação podem rodar em runner K8S, Docker+Machine ou o que você preferir.
+
+Com a imagem buildada precisamos armazenar ela em algum lugar. Esse lugar geralmente é um registry. Existem vários registrys por ai e você pode escolher em qual você irá armazenar suas imagens. Na nossa perspectiva criamos push's para o registry interno do GitLab Server e o registry da AWS ECR. Para fazer o Docker Push antes você irá se autenticar no registry e caso seja bem sucedido a autenticação você está preparado para enviar sua imagem.
+
+Esqueci de avisar, mas caso o stage de Build ou Push falhar, a pipeline também falhará e os jobs a sua frente não serão executados. Essa abordagem é uma abordagem default do GitLab, mas pode ser contornada caso seja necessário. Por padrão iremos manter o default.
+
+Tendo a imagem já no registry que escolhemos, podemos executar outras tarefas. Uma delas será o Deploy. O tipo de deploy irá diferenciar de acordo com a forma que sua arquitetura de aplicação foi criada. Nesse caso temos uma arquitetura na AWS que utilizar ECS para criar os nossos services de containers e rodar nossas aplicações. Portanto, o tipo de deploy feito aqui é deploy de ECS. Mas também utilizamos bastante o deploy de ambiente K8S, porém não foi abordado na construção dessa pipeline Windows.
+
+Pronto, após essas definições você poderá compreender melhor como nós podemos criar de forma simples uma pipeline que suporta Build de Windows. Vale ressaltar que caso você queira seguir esse mesmo passo a passo você irá antes precisar de uma infraestrutura que comporte todas as especificações utilizadas para essa pipeline, como:
+
+* GitLab Server
+* GitLab Runner:
+  * Shell - Windows
+  * K8S
+* AWS:
+  * ECS
+  * ECR
 
 ### Pipeline 
 
