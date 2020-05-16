@@ -1,11 +1,11 @@
 <p align="center">
-  <img alt="gitlab-runner" src="https://miro.medium.com/max/264/1*0lzbnKgE5ILm4gctPH-EJg.jpeg" width="250px" float="center"/>
+  <img alt="pipeline-windows" src="https://miro.medium.com/max/264/1*0lzbnKgE5ILm4gctPH-EJg.jpeg" width="250px" float="center"/>
 </p>
 
 <h1 align="center">Pipeline Windows</h1>
 
 <p align="center">
-  <strong>Pipeline that support Windows Images in Build Docker</strong>
+  <strong>GitLab CI pipeline - support Windows Docker Build</strong>
 </p>
 
 <p align="center">
@@ -85,6 +85,11 @@ To this project you yeed:
   - [Ruby](https://www.ruby-lang.org/pt/)
   - [GitLab CI](https://docs.gitlab.com/ee/ci/)
 
+### GitLab Runner Tags
+
+- windows
+- aws-prod
+
 ### Description
 
 When we are working with continuous delivery methodologies, we have two extremely important concepts that need to be understood and differentiated: internships and jobs.
@@ -94,6 +99,39 @@ Basically, the stages of a pipeline will be the organizers of the job execution 
 <p align="center">
   <img alt="gitlab-ci" src="https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_extended_v12_3.png" width="950px" float="center"/>
 </p>
+
+### Pipeline 
+
+#### Templates
+
+- .gitlab-ci.yml
+- base.yml
+- bronze.yml
+
+#### Stages
+
+- Pre Check
+- Clean
+- Lint
+- Build
+- Push
+- Deploy
+
+#### Workflow
+
+```yml
+workflow:
+  rules:
+    - if: $PIPELINE_DISABLE == "true"
+      when: never
+    - if: '$CI_PIPELINE_SOURCE =~ /^(trigger|merge_request_event)$/'
+      when: never
+    - when: always
+```
+
+### AWS
+
+In this pipeline we support ECR (elastic container registry) and ECS (elastic container service) in AWS. So, we have deploy to ECS and Build-Push to ECR. To more details access this [link](https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html). 
 
 ### Testing
 
