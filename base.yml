@@ -4,15 +4,20 @@ default:
   timeout: 1h 30m
 
 include:
-  - local: "/.gitlab/ci/global.gitlab-ci.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/global.gitlab-ci.yml"
 
-  - local: "/.gitlab/ci/base.gitlab-ci.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/base.gitlab-ci.yml"
 
-  - local: "/.gitlab/ci/lint/docker.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/lint/docker.yml"
 
-  - local: "/.gitlab/ci/build/docker.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/build/docker.yml"
 
-  - local: "/.gitlab/ci/push/gitlab-registry.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/push/gitlab-registry.yml"
 
 workflow:
   rules:

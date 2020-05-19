@@ -5,7 +5,7 @@
 <h1 align="center">Pipeline Windows</h1>
 
 <p align="center">
-  <strong>GitLab CI pipeline - support Windows Docker Build</strong>
+  <strong>GitLab CI Pipeline - support Docker Build to Windows Images</strong>
 </p>
 
 <p align="center">
@@ -78,6 +78,8 @@ To this project you yeed:
 
 * Ruby 2.6.5.
 * GitLab Runner.
+  * Support to Windows System:
+    * Shell, Docker or Docker+Machine mode.
 * GitLab Server.
 
 ### Built with
@@ -107,7 +109,7 @@ Nessa pipeline fazemos algumas validações iniciais com o estágio **.pre** ond
 
 * Deploy
 * Push
-* Autenticação
+* Auth
 
 Geralmente são variáveis sensíveis e que devemos passar de alguma forma para a nossa pipeline. A forma mais abordada é utilizando a própria interface do GitLab e setando esses valores como environments ou de um grupo ou do próprio projeto. Caso o estágio de **.pre** ache algum valor que esteja faltando ou que esteja vazio, o resto da pipeline não é concluída. 
 

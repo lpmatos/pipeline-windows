@@ -4,23 +4,32 @@ default:
   timeout: 1h 30m
 
 include:
-  - local: "/.gitlab/ci/global.gitlab-ci.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/global.gitlab-ci.yml"
 
-  - local: "/.gitlab/ci/base.gitlab-ci.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/base.gitlab-ci.yml"
 
-  - local: "/.gitlab/ci/pre-check/aws.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/aws.yml"
 
-  - local: "/.gitlab/ci/pre-check/ecr.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/ecr.yml"
 
-  - local: "/.gitlab/ci/pre-check/ecs.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/pre-check/ecs.yml"
 
-  - local: "/.gitlab/ci/lint/docker.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/lint/docker.yml"
 
-  - local: "/.gitlab/ci/build/aws-ecr.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/build/aws-ecr.yml"
 
-  - local: "/.gitlab/ci/push/aws-ecr.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/push/aws-ecr.yml"
 
-  - local: "/.gitlab/ci/deploy/aws-ecs.yml"
+  - project: "shared/pipeline/windows"
+    file: "/.gitlab/ci/deploy/aws-ecs.yml"
 
 workflow:
   rules:
